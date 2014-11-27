@@ -4,7 +4,7 @@ from etcdocker import util
 
 
 class Container:
-    def __main__(self, name, params):
+    def __init__(self, name, params):
         self.name = name
         self.params = params
 
@@ -21,8 +21,8 @@ class Container:
                 found = True
                 image = pc['Image'].split(':')
                 if (pc['Status'].startswith('Up') and
-                        image[0] == params['image'] and
-                        image[2] == params['tag']):
+                        image[0] == self.params.get('image') and
+                        image[2] == self.params('tag')):
                     return
                 break
 
@@ -35,14 +35,14 @@ class Container:
 
         # Create container with specified args
         client.create_container(
-            image=params.get('image'),
+            image=self.params.get('image'),
             detach=True,
-            volumes_from=params.get('volumes_from'),
-            volumes=params.get('volumes'),
+            volumes_from=self.params.get('volumes_from'),
+            volumes=self.params.get('volumes'),
             name=self.name)
 
         # Start 'er up
         client.start(
             container=self.name,
-            port_bindings=params.get('ports'),
-            privileged=params.get('privileged'))
+            port_bindings=self.params.get('ports'),
+            privileged=self.params.get('privileged'))
