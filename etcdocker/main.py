@@ -60,7 +60,7 @@ def main(*args, **kwargs):
     # Run app
     parser = ArgumentParser()
 
-    parser.add_argument('base_dir', dest='base_dir', meta_var='/etcd/path',
+    parser.add_argument('base_dir', meta_var='/etcd/path',
                         help='etcd key directory storing config.')
     args = parser.parse_args()
     key_dir = args.base_dir
