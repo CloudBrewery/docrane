@@ -25,6 +25,8 @@ def run(base_key_dir):
     for container in containers:
         container_path = os.path.join(base_key_dir, container)
 
+        params = util.get_params(container_path)
+
         for param in params.iterkeys():
             try:
                 params[param] = client.read(
