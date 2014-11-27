@@ -1,7 +1,11 @@
-import os
 import gevent
+import os
 
-from etcdocker import util, Watcher
+from argparse import ArgumentParser
+
+from etcdocker import util
+from etcdocker.container import Container
+from etcdocker.watcher import Watcher
 
 
 def get_container_names(containers):
@@ -52,11 +56,17 @@ def run(base_key_dir):
     exit(0)
 
 
-def __main__(*args, **kwargs):
+def main(*args, **kwargs):
     # Run app
-    key_dir = kwargs.get('base_dir')
-    if not key_dir:
-        print 'Please specify a key directory with --base_dir='
-        exit(1)
+    parser = ArgumentParser()
+
+    parser.add_argement('base_dir', dest='base_dir', meta_var='/etcd/path',
+                        help='etcd key directory storing config.')
+    args = parser.parse_args()
+    key_dir = args.base_dir
 
     run(key_dir)
+
+
+if __name__ == '__main__':
+    main()
