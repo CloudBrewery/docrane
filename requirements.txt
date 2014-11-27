@@ -1,0 +1,2 @@
+python-etcd>=0.3.2
+docker-py>=0.6.0
