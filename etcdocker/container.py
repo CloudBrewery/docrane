@@ -44,8 +44,11 @@ class Container:
 
         for param in self.params.iterkeys():
             if self.params.get(param) and param in converted_params.keys():
-                converted_params[param] = ast.literal_eval(
-                    self.params.get(param))
+                try:
+                    converted_params[param] = ast.literal_eval(
+                        self.params.get(param))
+                except ValueError:
+                    pass
 
         # Create container with specified args
         client.create_container(

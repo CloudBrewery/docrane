@@ -1,5 +1,3 @@
-import etcd
-
 from etcdocker import util
 from gevent import sleep
 
@@ -10,12 +8,8 @@ class ContainerWatcher(object):
         self.container_key = container_key
 
     def watch(self):
-        # Assuming default etcd connection settings
-        client = etcd.Client()
-
         while True:
-            cur_cont_dir = client.get(self.container_key)
-            cur_params = util.get_params(cur_cont_dir)
+            cur_params = util.get_params(self.container_key)
 
             if util.params_changed(self.container, cur_params):
                 print "Container '%s' has changed. Respawning..." % (
