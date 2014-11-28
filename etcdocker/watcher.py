@@ -9,10 +9,13 @@ class ContainerWatcher(object):
         self.container_key = container_key
 
     def watch(self):
+        """
+        Watch a container's etcd path for changes and respawn if necessary
+        """
         while True:
             cur_params = util.get_params(self.container_key)
 
-            if util.params_changed(self.container, cur_params):
+            if self.container.update_params(cur_params):
                 print "Container '%s' has changed. Respawning..." % (
                     self.container.name)
                 self.container.ensure_running(force_restart=True)

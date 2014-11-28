@@ -8,22 +8,9 @@ from etcdocker.container import Container
 from etcdocker.watcher import ContainerWatcher
 
 
-def get_container_names(containers):
-    # Returns list of container names from etcd key list
-    container_names = []
-    for container in containers:
-        container_names.append(container['key'].rsplit('/')[-1])
-
-    return container_names
-
-
 def run(base_key_dir):
     # Main agent loop
-    import etcd
-    client = etcd.Client()
-    # Get container key list
-    containers = get_container_names(client.read(
-        base_key_dir, recursive=True, sorted=True)._children)
+    containers = util.get_etcd_container_names(base_key_dir)
     watchers = []
 
     for container in containers:
