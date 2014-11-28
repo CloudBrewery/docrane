@@ -11,6 +11,7 @@ class Container:
 
     def set_or_create_param(self, key, value):
         self.params[key] = value
+        print "Set param '%s' on '%s'" % (key, self.name)
 
     def ensure_running(self, force_restart=False):
         # Ensure container is running with specified params

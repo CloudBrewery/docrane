@@ -5,7 +5,7 @@ from argparse import ArgumentParser
 
 from etcdocker import util
 from etcdocker.container import Container
-from etcdocker.watcher import Watcher
+from etcdocker.watcher import ContainerWatcher
 
 
 def get_container_names(containers):
@@ -31,13 +31,6 @@ def run(base_key_dir):
 
         params = util.get_params(container_path)
 
-        for param in params.iterkeys():
-            try:
-                params[param] = client.read(
-                    os.path.join(container_path, param)).value
-            except etcd.KeyValue:
-                continue
-
         if not (params.get('tag') or params.get('image')):
             print 'Image/tag not specified for container %s.. skipping.' % (
                 container)
@@ -45,10 +38,8 @@ def run(base_key_dir):
         cont = Container(container, params)
         cont.ensure_running()
 
-        for param in params.iterkeys():
-            key_path = os.path.join(container_path, param)
-            watcher = Watcher(cont, key_path)
-            watchers.append(gevent.spawn(watcher.watch))
+        watcher = ContainerWatcher(cont, container_path)
+        watchers.append(gevent.spawn(watcher))
 
     gevent.joinall(watchers)
 

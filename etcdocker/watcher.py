@@ -1,33 +1,25 @@
 import etcd
 
+from etcdocker import util
 from gevent import sleep
 
 
-class Watcher(object):
-    def __init__(self, container, key):
-        self.key = key
+class ContainerWatcher(object):
+    def __init__(self, container, container_key):
         self.container = container
-        self.param = key.rsplit('/')[-1]
+        self.container_key = container_key
 
     def watch(self):
-        # Assuming default etcd connection settings for now
+        # Assuming default etcd connection settings
         client = etcd.Client()
 
         while True:
-            cur_val = client.get(self.key).value
+            cur_cont_dir = client.get(self.container_key)
+            cur_params = util.get_params(cur_cont_dir)
 
-            if cur_val != self.container.params.get(self.param):
-                print "Value for '%s' has changed on '%s'. Respawning" % (
-                    self.param, self.container.name)
-                self.container.set_or_create_param(self.param, cur_val)
+            if util.params_changed(self.container, cur_params):
+                print "Container '%s' has changed. Respawning..." % (
+                    self.container.name)
                 self.container.ensure_running(force_restart=True)
 
-            sleep(10)
-
-
-def __main__(*args, **kwargs):
-    # Run watcher
-    if not kwargs.get('key'):
-        exit(2)
-    watcher = Watcher(kwargs.get('key'))
-    watcher.watch()
+            sleep(30)
