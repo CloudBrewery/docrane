@@ -20,7 +20,7 @@ class Watcher(object):
                 print "Value for '%s' has changed on '%s'. Respawning" % (
                     self.param, self.container.name)
                 self.container.set_or_create_param(self.param, cur_val)
-                self.container.ensure_running()
+                self.container.ensure_running(force_restart=True)
 
             sleep(10)
 

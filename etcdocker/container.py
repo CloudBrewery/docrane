@@ -11,7 +11,7 @@ class Container:
     def set_or_create_param(self, key, value):
         self.params[key] = value
 
-    def ensure_running(self):
+    def ensure_running(self, force_restart=False):
         # Ensure container is running with specified params
         containers = util.get_containers()
         found = False
@@ -22,7 +22,8 @@ class Container:
                 full_image = "%s:%s" % (
                     self.params.get('image'), self.params.get('tag'))
                 if (pc['Status'].startswith('Up') and
-                        pc['Image'] == full_image):
+                        pc['Image'] == full_image and
+                        not force_restart):
                     return
                 break
 
