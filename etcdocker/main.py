@@ -39,7 +39,7 @@ def run(base_key_dir):
         cont.ensure_running()
 
         watcher = ContainerWatcher(cont, container_path)
-        watchers.append(gevent.spawn(watcher))
+        watchers.append(gevent.spawn(watcher.watch()))
 
     gevent.joinall(watchers)
 
