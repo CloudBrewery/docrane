@@ -1,16 +1,12 @@
-=====================
-etcdocker
-=====================
+# etcdocker #
 
 etcdocker is a Docker container manager that relies on etcd to provide relevant configuration details. It watches for changes in configuration and automatically stops, removes, recreates, and starts your Docker containers.
 
-Installation
-============
+## Installation ##
 
 Installation is as simple as running `pip install -r requirements.txt && python setup.py install`.
 
-Usage
-============
+## Usage ##
 
 ```
 usage: etcdocker [-h] /etcd/path
@@ -22,8 +18,7 @@ optional arguments:
   -h, --help  show this help message and exit
 ```
 
-etcd Key Structure
-============
+## etcd Key Structure##
 
 The etcd key directory structure is crucial to ensure that etcdocker can properly read configuration details for Docker.
 
@@ -54,7 +49,6 @@ The `/image` and `/tag` keys are used to create a combined image name in the for
 
 **Note:** Using latest for your tag is not recommended.
 
-Issues / Feature Requests
-============
+## Issues / Feature Requests ##
 
 Please feel free to use the Bitbucket Issue Tracker to submit any issues or feature requests!
