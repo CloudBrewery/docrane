@@ -19,10 +19,10 @@ class Container:
         for pc in containers:
             if "/%s" % self.name in pc['Names']:
                 found = True
-                image = pc['Image'].split(':')
+                full_image = "%s:%s" % (
+                    self.params.get('image'), self.params.get('tag'))
                 if (pc['Status'].startswith('Up') and
-                        image[0] == self.params.get('image') and
-                        image[2] == self.params('tag')):
+                        pc['Image'] == full_image):
                     return
                 break
 
