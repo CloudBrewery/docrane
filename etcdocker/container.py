@@ -35,15 +35,17 @@ class Container:
             client.stop(self.name, 5)
             client.remove_container(self.name)
 
-        # Convert our ports into a dict if necessary
+        # Convert params into proper types
         ports = ast.literal_eval(self.params.get('ports'))
+        volumes_from = ast.literal_eval(self.params.get('volumes_from'))
+        volumes = ast.literal_eval(self.params.get('volumes'))
 
         # Create container with specified args
         client.create_container(
             image=self.params.get('image'),
             detach=True,
-            volumes_from=self.params.get('volumes_from'),
-            volumes=self.params.get('volumes'),
+            volumes_from=volumes_from,
+            volumes=volumes,
             ports=ports.keys(),
             name=self.name)
 
