@@ -43,7 +43,7 @@ class Container:
             'volumes': None}
 
         for param in self.params.iterkeys():
-            if self.param.get(param) and param in converted_params.keys():
+            if self.params.get(param) and param in converted_params.keys():
                 converted_params[param] = ast.literal_eval(
                     self.params.get(param))
 
