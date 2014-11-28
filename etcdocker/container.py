@@ -1,3 +1,4 @@
+import ast
 import docker
 
 from etcdocker import util
@@ -34,16 +35,20 @@ class Container:
             client.stop(self.name, 5)
             client.remove_container(self.name)
 
+        # Convert our ports into a dict if necessary
+        ports = ast.literal_eval(self.params.get('ports'))
+
         # Create container with specified args
         client.create_container(
             image=self.params.get('image'),
             detach=True,
             volumes_from=self.params.get('volumes_from'),
             volumes=self.params.get('volumes'),
+            ports=ports.keys(),
             name=self.name)
 
         # Start 'er up
         client.start(
             container=self.name,
-            port_bindings=self.params.get('ports'),
+            port_bindings=ports,
             privileged=self.params.get('privileged'))
