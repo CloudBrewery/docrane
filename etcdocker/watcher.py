@@ -1,5 +1,6 @@
-from etcdocker import util
 from gevent import sleep
+
+from etcdocker import util
 
 
 class ContainerWatcher(object):
