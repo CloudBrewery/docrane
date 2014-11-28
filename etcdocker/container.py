@@ -36,21 +36,27 @@ class Container:
             client.remove_container(self.name)
 
         # Convert params into proper types
-        ports = ast.literal_eval(self.params.get('ports'))
-        volumes_from = ast.literal_eval(self.params.get('volumes_from'))
-        volumes = ast.literal_eval(self.params.get('volumes'))
+        converted_params = {
+            'ports': None,
+            'volumes_from': None,
+            'volumes': None}
+
+        for param in self.params.iterkeys():
+            if self.param.get(param) and param in converted_params.keys():
+                converted_params[param] = ast.literal_eval(
+                    self.params.get(param))
 
         # Create container with specified args
         client.create_container(
             image=self.params.get('image'),
             detach=True,
-            volumes_from=volumes_from,
-            volumes=volumes,
-            ports=ports.keys(),
+            volumes_from=converted_params.get('volumes_from'),
+            volumes=converted_params.get('volumes'),
+            ports=converted_params.get('ports').keys(),
             name=self.name)
 
         # Start 'er up
         client.start(
             container=self.name,
-            port_bindings=ports,
+            port_bindings=converted_params.get('ports'),
             privileged=self.params.get('privileged'))
