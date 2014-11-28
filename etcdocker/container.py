@@ -51,7 +51,6 @@ class Container:
         client.create_container(
             image=self.params.get('image'),
             detach=True,
-            volumes_from=converted_params.get('volumes_from'),
             volumes=converted_params.get('volumes'),
             ports=converted_params.get('ports').keys(),
             name=self.name)
@@ -60,4 +59,5 @@ class Container:
         client.start(
             container=self.name,
             port_bindings=converted_params.get('ports'),
+            volumes_from=converted_params.get('volumes_from'),
             privileged=self.params.get('privileged'))
