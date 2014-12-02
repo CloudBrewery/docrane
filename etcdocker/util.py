@@ -36,11 +36,7 @@ def get_etcd_container_names(base_key_dir):
     containers = get_container_names(client.read(
         base_key_dir, recursive=True, sorted=True)._children)
 
-    container_names = []
-    for container in containers:
-        container_names.append(container['key'].rsplit('/')[-1])
-
-    return container_names
+    return containers
 
 
 def get_params(container_path):
