@@ -1,4 +1,3 @@
-import ast
 from etcdocker import util
 
 
@@ -11,7 +10,6 @@ class Container(object):
     def set_or_create_param(self, key, value):
         self.params[key] = value
         print "Set param '%s' on '%s'" % (key, self.name)
-
 
     def update_params(self, params):
         """
@@ -37,7 +35,6 @@ class Container(object):
                 has_changed = True
 
         return has_changed
-
 
     def ensure_running(self, force_restart=False):
         """
