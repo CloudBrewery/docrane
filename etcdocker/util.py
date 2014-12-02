@@ -136,5 +136,6 @@ def stop_and_rm_docker_container(name):
         name (str) - Name of container
     """
     client = _get_docker_client()
+    # Try to stop the container, kill after 5 secs
     client.stop(name, 5)
     client.remove_container(name)
