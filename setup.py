@@ -5,13 +5,15 @@ try:
 except ImportError:
     from distutils.core import setup
 
+from etcdocker import __version__ as version
+
 packages = [
     'etcdocker'
 ]
 
 setup(
     name='etcdocker',
-    version='beta',
+    version=version,
     description='Manage docker container runtime configuration with etcd',
     long_description='',
     author='Jacob Godin',
