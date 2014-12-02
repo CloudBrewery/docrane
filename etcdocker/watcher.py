@@ -5,7 +5,7 @@ from gevent import sleep
 from etcdocker import util
 
 
-LOG = logging.get_logger()
+LOG = logging.getLogger()
 
 
 class ContainerWatcher(object):

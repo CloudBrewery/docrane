@@ -9,7 +9,7 @@ from etcdocker.container import Container
 from etcdocker.watcher import ContainerWatcher
 
 
-LOG = logging.get_logger()
+LOG = logging.getLogger()
 
 
 def run(base_key_dir):
