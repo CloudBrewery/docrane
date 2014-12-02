@@ -31,7 +31,7 @@ def get_etcd_container_names(base_key_dir):
         List of container names
     """
     # Returns list of container names from etcd key list
-    client = etcd.Client()
+    client = _get_docker_client()
     # Get container key list
     containers = get_container_names(client.read(
         base_key_dir, recursive=True, sorted=True)._children)
@@ -49,7 +49,7 @@ def get_params(container_path):
     Returns: (dict)
         Raw etcd params
     """
-    client = etcd.Client()
+    client = _get_docker_client()
     children = client.read(container_path)._children
     params = {}
 
@@ -96,7 +96,7 @@ def create_docker_container(name, params):
         name (str) - Name of container
         params (dict) - Docker params
     """
-    client = _get_docker_container()
+    client = _get_docker_client()
     client.create_container(
         image=params.get('image'),
         detach=True,
@@ -113,7 +113,7 @@ def start_docker_container(name, params):
         name (str) - Name of container
         params (dict) - Docker params
     """
-    client = _get_docker_container()
+    client = _get_docker_client()
     client.start(
         container=name,
         port_bindings=params.get('ports'),
@@ -128,6 +128,6 @@ def stop_and_rm_docker_container(name):
     args:
         name (str) - Name of container
     """
-    client = _get_docker_container()
+    client = _get_docker_client()
     client.stop(name, 5)
     client.remove_container(name)
