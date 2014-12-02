@@ -1,6 +1,7 @@
 import ast
 import docker
 import etcd
+import logging
 
 
 LOG = logging.getLogger()
