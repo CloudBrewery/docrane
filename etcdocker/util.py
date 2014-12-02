@@ -3,6 +3,9 @@ import docker
 import etcd
 
 
+LOG = logging.getLogger()
+
+
 def _get_docker_client():
     # Assume docker is local
     return docker.Client()
