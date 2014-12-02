@@ -1,4 +1,9 @@
+import logging
+
 from etcdocker import util
+
+
+LOG = logging.get_logger()
 
 
 class Container(object):
@@ -9,7 +14,7 @@ class Container(object):
 
     def set_or_create_param(self, key, value):
         self.params[key] = value
-        print "Set param '%s' on '%s'" % (key, self.name)
+        LOG.info("Set param '%s' on '%s'" % (key, self.name))
 
     def update_params(self, params):
         """

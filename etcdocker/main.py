@@ -1,4 +1,5 @@
 import gevent
+import logging
 import os
 
 from argparse import ArgumentParser
@@ -6,6 +7,9 @@ from argparse import ArgumentParser
 from etcdocker import util
 from etcdocker.container import Container
 from etcdocker.watcher import ContainerWatcher
+
+
+LOG = logging.get_logger()
 
 
 def run(base_key_dir):
@@ -19,8 +23,9 @@ def run(base_key_dir):
         params = util.get_params(container_path)
 
         if not (params.get('tag') or params.get('image')):
-            print 'Image/tag not specified for container %s.. skipping.' % (
-                container)
+            LOG.warning(
+                'Image/tag not specified for container %s.. skipping.' % (
+                    container))
 
         cont = Container(container, params)
         cont.ensure_running()
@@ -30,7 +35,7 @@ def run(base_key_dir):
 
     gevent.joinall(watchers)
 
-    print "All watchers quit, exiting.."
+    LOG.warning("All watchers quit, exiting..")
     exit(0)
 
 

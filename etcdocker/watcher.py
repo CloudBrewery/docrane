@@ -1,6 +1,11 @@
+import logging
+
 from gevent import sleep
 
 from etcdocker import util
+
+
+LOG = logging.get_logger()
 
 
 class ContainerWatcher(object):
@@ -16,8 +21,8 @@ class ContainerWatcher(object):
             cur_params = util.get_params(self.container_key)
 
             if self.container.update_params(cur_params):
-                print "Container '%s' has changed. Respawning..." % (
-                    self.container.name)
+                LOG.info("Container '%s' has changed. Respawning..." % (
+                    self.container.name))
                 self.container.ensure_running(force_restart=True)
 
             sleep(30)
