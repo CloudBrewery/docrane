@@ -6,6 +6,11 @@ def _get_docker_client():
     return docker.Client()
 
 
+def _get_etcd_client():
+    # Assume docker is local
+    return etcd.Client()
+
+
 def get_containers():
     client = _get_docker_client()
     return client.containers(all=True)
@@ -31,7 +36,7 @@ def get_etcd_container_names(base_key_dir):
         List of container names
     """
     # Returns list of container names from etcd key list
-    client = _get_docker_client()
+    client = _get_etcd_client()
     # Get container key list
     containers = get_container_names(client.read(
         base_key_dir, recursive=True, sorted=True)._children)
@@ -49,7 +54,7 @@ def get_params(container_path):
     Returns: (dict)
         Raw etcd params
     """
-    client = _get_docker_client()
+    client = _get_etcd_client()
     children = client.read(container_path)._children
     params = {}
 
