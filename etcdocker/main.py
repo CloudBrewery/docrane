@@ -35,7 +35,7 @@ def run(base_key_dir):
         cont.ensure_running()
 
         watcher = ContainerWatcher(cont, container_path)
-        watchers.append(gevent.spawn(watcher.watch()))
+        watchers.append(gevent.spawn(watcher.watch))
 
         LOG.info("Watching container '%s'" % container)
 
