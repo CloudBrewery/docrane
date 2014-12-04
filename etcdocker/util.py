@@ -4,7 +4,7 @@ import etcd
 import logging
 
 
-LOG = logging.getLogger()
+LOG = logging.getLogger("etcdocker")
 
 
 def _get_docker_client():

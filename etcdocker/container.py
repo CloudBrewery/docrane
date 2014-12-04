@@ -3,7 +3,7 @@ import logging
 from etcdocker import util
 
 
-LOG = logging.getLogger()
+LOG = logging.getLogger("etcdocker")
 
 
 class Container(object):

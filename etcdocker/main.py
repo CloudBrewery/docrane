@@ -1,6 +1,7 @@
 import gevent
 import logging
 import os
+import sys
 
 from argparse import ArgumentParser
 
@@ -9,13 +10,16 @@ from etcdocker.container import Container
 from etcdocker.watcher import ContainerWatcher
 
 
-LOG = logging.getLogger()
+LOG = logging.getLogger("etcdocker")
 
 
 def run(base_key_dir):
     # Main agent loop
     containers = util.get_etcd_container_names(base_key_dir)
     watchers = []
+
+    LOG.info("Containers found:")
+    LOG.info(containers)
 
     for container in containers:
         container_path = os.path.join(base_key_dir, container)
@@ -50,8 +54,13 @@ def main(*args, **kwargs):
     parser.add_argument('-v', '--verbose', help='Enable verbose logging',
                         action="store_true")
     args = parser.parse_args()
+
+    log_handler = logging.StreamHandler(sys.stdout)
     if args.verbose:
-        logging.root.setLevel(logging.INFO)
+        LOG.setLevel(logging.INFO)
+        log_handler.setLevel(logging.INFO)
+    LOG.addHandler(log_handler)
+
     key_dir = args.base_dir
 
     run(key_dir)
