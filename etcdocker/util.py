@@ -91,7 +91,7 @@ def convert_params(params):
             try:
                 converted_params[param] = ast.literal_eval(
                     params.get(param))
-            except ValueError:
+            except (ValueError, SyntaxError):
                 LOG.error("Malformed param '%s'. Skipping..." % param)
         else:
             converted_params[param] = params.get(param)
