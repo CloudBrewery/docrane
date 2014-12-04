@@ -30,6 +30,7 @@ def run(base_key_dir):
             LOG.warning(
                 'Image/tag not specified for container %s.. skipping.' % (
                     container))
+            continue
 
         cont = Container(container, params)
         cont.ensure_running()
