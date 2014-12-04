@@ -108,11 +108,17 @@ def create_docker_container(name, params):
         params (dict) - Docker params
     """
     client = _get_docker_client()
+
+    try:
+        ports = params.get('ports').keys()
+    except AttributeError:
+        ports = []
+
     client.create_container(
         image=params.get('image'),
         detach=True,
         volumes=params.get('volumes'),
-        ports=params.get('ports').keys(),
+        ports=ports,
         name=name)
 
 
