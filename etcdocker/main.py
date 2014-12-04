@@ -33,6 +33,8 @@ def run(base_key_dir):
         watcher = ContainerWatcher(cont, container_path)
         watchers.append(gevent.spawn(watcher.watch()))
 
+        LOG.info("Watching container '%s'" % container)
+
     gevent.joinall(watchers)
 
     LOG.warning("All watchers quit, exiting..")
@@ -45,7 +47,11 @@ def main(*args, **kwargs):
 
     parser.add_argument('base_dir', metavar='/etcd/path',
                         help='etcd key directory storing config.')
+    parser.add_argument('-v', '--verbose', help='Enable verbose logging',
+                        action="store_true")
     args = parser.parse_args()
+    if args.verbose:
+        logging.root.setLevel(logging.INFO)
     key_dir = args.base_dir
 
     run(key_dir)
