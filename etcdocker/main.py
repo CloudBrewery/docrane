@@ -56,6 +56,9 @@ def main(*args, **kwargs):
     args = parser.parse_args()
 
     log_handler = logging.StreamHandler(sys.stdout)
+    log_formatter = logging.Formatter(
+        fmt='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    log_handler.setFormatter(log_formatter)
     if args.verbose:
         LOG.setLevel(logging.INFO)
         log_handler.setLevel(logging.INFO)
@@ -63,6 +66,7 @@ def main(*args, **kwargs):
 
     key_dir = args.base_dir
 
+    LOG.warn('---- Starting etcdocker ----')
     run(key_dir)
 
 
