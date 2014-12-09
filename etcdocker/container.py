@@ -65,9 +65,11 @@ class Container(object):
 
         if found:
             # Shut down old container first
+            LOG.warning("Stopping %s..." % self.name)
             util.stop_and_rm_docker_container(self.name)
 
         self.docker_params = util.convert_params(self.params)
+        LOG.warning("Starting %s..." % self.name)
         self.create()
         self.start()
 
