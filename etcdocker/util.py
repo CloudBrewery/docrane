@@ -96,6 +96,9 @@ def convert_params(params):
         else:
             converted_params[param] = params.get(param)
 
+    converted_params['image'] = "%s:%s" % (
+        params.get('image'), params.get('tag'))
+
     return converted_params
 
 
