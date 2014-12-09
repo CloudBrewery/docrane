@@ -24,5 +24,7 @@ class ContainerWatcher(object):
                 LOG.info("Container '%s' has changed. Respawning..." % (
                     self.container.name))
                 self.container.ensure_running(force_restart=True)
+            else:
+                self.container.ensure_running()
 
             sleep(30)
