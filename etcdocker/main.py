@@ -26,7 +26,7 @@ def run(base_key_dir):
 
         params = util.get_params(container_path)
 
-        if not (params.get('tag') or params.get('image')):
+        if not (params.get('tag') and params.get('image')):
             LOG.warning(
                 'Image/tag not specified for container %s.. skipping.' % (
                     container))
