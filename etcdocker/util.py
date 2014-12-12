@@ -169,7 +169,7 @@ def get_docker_images(filter=None):
     return client.images(name=filter)
 
 
-def get_docker_image_latest(image_name):
+def get_docker_similar_images(image_name):
     """
     Get a list of image names that are the same
 
