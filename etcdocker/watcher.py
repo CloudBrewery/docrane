@@ -28,3 +28,20 @@ class ContainerWatcher(object):
                 self.container.ensure_running()
 
             sleep(30)
+
+
+class ImagesWatcher(object):
+    IMAGES = []
+
+    def __init__(self):
+        # Make sure to pre-populate so we always have images
+        self.IMAGES = util.get_docker_images()
+
+    def watch(self):
+        """
+        Update image list every so often
+        """
+        while True:
+            self.IMAGES = util.get_docker_images()
+
+            sleep(120)

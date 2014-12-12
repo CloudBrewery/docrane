@@ -152,3 +152,46 @@ def stop_and_rm_docker_container(name):
     # Try to stop the container, kill after 5 secs
     client.stop(name, 5)
     client.remove_container(name)
+
+
+def get_docker_images(filter=None):
+    """
+    Get a list of images
+
+    args:
+        filter (str) - Filter string
+
+    Returns: (list)
+        List of image IDs, optionally filtered
+    """
+    client = _get_docker_client()
+
+    return client.images(name=filter)
+
+
+def get_docker_image_latest(image_name):
+    """
+    Get a list of image names that are the same
+
+    args:
+        image_name (str) - Latest image
+
+    Returns: (list)
+        List of image names
+    """
+    from etcdocker.watcher.ImagesWatcher import IMAGES
+
+    cur_image_id = None
+    cur_images = []
+
+    for i in IMAGES:
+        for tag in i.get('RepoTags'):
+            if tag == image_name:
+                cur_image_id = i.get('Id')
+
+    for i in IMAGES:
+        if i.get('Id') == cur_image_id:
+            for tag in i.get('RepoTags'):
+                cur_images.append(tag)
+
+    return cur_images

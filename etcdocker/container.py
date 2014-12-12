@@ -57,8 +57,9 @@ class Container(object):
                 found = True
                 full_image = "%s:%s" % (
                     self.params.get('image'), self.params.get('tag'))
+                cur_images = util.get_docker_similar_images(pc['Image'])
                 if (pc['Status'].startswith('Up') and
-                        pc['Image'] == full_image and
+                        full_image in cur_images and
                         not force_restart):
                     return
                 break
