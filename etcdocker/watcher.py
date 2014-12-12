@@ -6,7 +6,6 @@ from etcdocker import util
 
 
 LOG = logging.getLogger("etcdocker")
-IMAGES = []
 
 
 class ContainerWatcher(object):
@@ -32,17 +31,23 @@ class ContainerWatcher(object):
 
 
 class ImagesWatcher(object):
+    images = []
+
     def __init__(self):
         # Make sure to pre-populate so we always have images
-        global IMAGES
-        IMAGES = util.get_docker_images()
+        self.images = util.get_docker_images()
 
     def watch(self):
         """
         Update image list every so often
         """
-        global IMAGES
         while True:
-            IMAGES = util.get_docker_images()
+            self.images = util.get_docker_images()
 
             sleep(120)
+
+    def get_images(self):
+        """
+        Return list of images
+        """
+        return self.images

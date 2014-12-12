@@ -7,10 +7,11 @@ LOG = logging.getLogger("etcdocker")
 
 
 class Container(object):
-    def __init__(self, name, params):
+    def __init__(self, name, params, images_watcher):
         self.name = name
         self.params = params
         self.docker_params = {}
+        self.images_watcher = images_watcher
 
     def set_or_create_param(self, key, value):
         self.params[key] = value
@@ -57,7 +58,8 @@ class Container(object):
                 found = True
                 full_image = "%s:%s" % (
                     self.params.get('image'), self.params.get('tag'))
-                cur_images = util.get_docker_similar_images(pc['Image'])
+                cur_images = util.get_docker_similar_images(
+                    pc['Image'], self.images_watcher.get_images())
                 if (pc['Status'].startswith('Up') and
                         full_image in cur_images and
                         not force_restart):

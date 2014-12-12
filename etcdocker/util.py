@@ -169,7 +169,7 @@ def get_docker_images(filter=None):
     return client.images(name=filter)
 
 
-def get_docker_similar_images(image_name):
+def get_docker_similar_images(image_name, images):
     """
     Get a list of image names that are the same
 
@@ -179,17 +179,15 @@ def get_docker_similar_images(image_name):
     Returns: (list)
         List of image names
     """
-    from etcdocker.watcher import IMAGES
-
     cur_image_id = None
     cur_images = []
 
-    for i in IMAGES:
+    for i in images:
         for tag in i.get('RepoTags'):
             if tag == image_name:
                 cur_image_id = i.get('Id')
 
-    for i in IMAGES:
+    for i in images:
         if i.get('Id') == cur_image_id:
             for tag in i.get('RepoTags'):
                 cur_images.append(tag)

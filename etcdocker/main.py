@@ -21,8 +21,8 @@ def run(base_key_dir):
     LOG.info("Containers found:")
     LOG.info(containers)
 
-    watcher = ImagesWatcher()
-    watchers.append(gevent.spawn(watcher.watch))
+    images_watcher = ImagesWatcher()
+    watchers.append(gevent.spawn(images_watcher.watch))
 
     for container in containers:
         container_path = os.path.join(base_key_dir, container)
@@ -35,7 +35,7 @@ def run(base_key_dir):
                     container))
             continue
 
-        cont = Container(container, params)
+        cont = Container(container, params, images_watcher)
         cont.ensure_running()
 
         watcher = ContainerWatcher(cont, container_path)
