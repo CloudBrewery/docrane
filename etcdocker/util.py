@@ -3,8 +3,6 @@ import docker
 import etcd
 import logging
 
-from etcdocker.watcher import IMAGES
-
 
 LOG = logging.getLogger("etcdocker")
 
@@ -181,6 +179,7 @@ def get_docker_similar_images(image_name):
     Returns: (list)
         List of image names
     """
+    from etcdocker.watcher import IMAGES
 
     cur_image_id = None
     cur_images = []
