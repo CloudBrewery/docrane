@@ -7,7 +7,7 @@ from argparse import ArgumentParser
 
 from etcdocker import util
 from etcdocker.container import Container
-from etcdocker.watcher import ContainerWatcher, ImageWatcher
+from etcdocker.watcher import ContainerWatcher, ImagesWatcher
 
 
 LOG = logging.getLogger("etcdocker")
@@ -21,7 +21,7 @@ def run(base_key_dir):
     LOG.info("Containers found:")
     LOG.info(containers)
 
-    watcher = ImageWatcher()
+    watcher = ImagesWatcher()
     watchers.append(gevent.spawn(watcher.watch))
 
     for container in containers:
