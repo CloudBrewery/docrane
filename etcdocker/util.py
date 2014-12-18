@@ -123,8 +123,7 @@ def create_docker_container(name, params):
         detach=True,
         volumes=params.get('volumes'),
         ports=ports,
-        name=name,
-        privileged=params.get('privileged', False))
+        name=name)
 
 
 def start_docker_container(name, params):
