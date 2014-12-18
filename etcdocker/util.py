@@ -84,6 +84,7 @@ def convert_params(params):
     converted_params = {
         'ports': None,
         'volumes_from': None,
+        'volume_bindings': None,
         'volumes': None}
 
     for param in params.iterkeys():
@@ -139,6 +140,7 @@ def start_docker_container(name, params):
         container=name,
         port_bindings=params.get('ports'),
         volumes_from=params.get('volumes_from'),
+        binds=params.get('volume_bindings', {}),
         privileged=params.get('privileged'))
 
 
