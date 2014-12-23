@@ -122,6 +122,7 @@ def create_docker_container(name, params):
         image=params.get('image'),
         detach=True,
         volumes=params.get('volumes'),
+        volumes_from=params.get('volumes_from'),
         ports=ports,
         name=name)
 
