@@ -2,10 +2,10 @@ import logging
 
 from gevent import sleep
 
-from etcdocker import util
+from docrane import util
 
 
-LOG = logging.getLogger("etcdocker")
+LOG = logging.getLogger("docrane")
 
 
 class ContainerWatcher(object):

@@ -5,22 +5,22 @@ try:
 except ImportError:
     from distutils.core import setup
 
-from etcdocker import __version__ as version
+from docrane import __version__ as version
 
 packages = [
-    'etcdocker'
+    'docrane'
 ]
 
 setup(
-    name='etcdocker',
+    name='docrane',
     version=version,
     description='Manage docker container runtime configuration with etcd',
     long_description='',
     author='Jacob Godin',
     author_email='jacobgodin@gmail.com',
-    url='https://bitbucket.org/clouda/etcdocker',
+    url='https://github.com/CloudBrewery/docrane',
     packages=packages,
-    scripts=['bin/etcdocker'],
+    scripts=['bin/docrane'],
     classifiers=(
         'Intended Audience :: Developers',
         'Natural Language :: English',

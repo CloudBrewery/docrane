@@ -1,9 +1,9 @@
 import logging
 
-from etcdocker import util
+from docrane import util
 
 
-LOG = logging.getLogger("etcdocker")
+LOG = logging.getLogger("docrane")
 
 
 class Container(object):

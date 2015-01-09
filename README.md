@@ -1,6 +1,6 @@
-# etcdocker #
+# docrane #
 
-etcdocker is a Docker container manager that relies on etcd to provide relevant configuration details. It watches for changes in configuration and automatically stops, removes, recreates, and starts your Docker containers.
+docrane is a Docker container manager that relies on etcd to provide relevant configuration details. It watches for changes in configuration and automatically stops, removes, recreates, and starts your Docker containers.
 
 ## Installation ##
 
@@ -9,7 +9,7 @@ Installation is as simple as running `pip install -r requirements.txt && python 
 ## Usage ##
 
 ```
-usage: etcdocker [-h] /etcd/path
+usage: docrane [-h] /etcd/path
 
 positional arguments:
   /etcd/path  etcd key directory storing config.
@@ -20,11 +20,11 @@ optional arguments:
 
 ## etcd Key Structure##
 
-The etcd key directory structure is crucial to ensure that etcdocker can properly read configuration details for Docker.
+The etcd key directory structure is crucial to ensure that docrane can properly read configuration details for Docker.
 
 Here is the general layout:
 ```
-/etcdocker
+/docrane
    /container_name1
       /image
       /tag
@@ -35,14 +35,14 @@ Here is the general layout:
       /volumes
 ```
 
-Since etcdocker uses [docker-py](http://docker-py.readthedocs.org/en/latest/) to interact with Docker, etcd value formatting should be consistent with what docker-py expects. For example, to attach a volume to a container, the following structure should be used:
+Since docrane uses [docker-py](http://docker-py.readthedocs.org/en/latest/) to interact with Docker, etcd value formatting should be consistent with what docker-py expects. For example, to attach a volume to a container, the following structure should be used:
 ```
-$ etcdctl mk /etcdocker/mycontainer/volumes "['/mnt']"
+$ etcdctl mk /docrane/mycontainer/volumes "['/mnt']"
 ```
 
 Likewise, to map ports:
 ```
-$ etcdctl mk /etcdocker/mycontainer/ports "{'3306': '3306'}"
+$ etcdctl mk /docrane/mycontainer/ports "{'3306': '3306'}"
 ```
 
 The `/image` and `/tag` keys are used to create a combined image name in the format of image:tag. This enables you to simply change the tag when pushing a new version, rather than updating the entire image string every time.

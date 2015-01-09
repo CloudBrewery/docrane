@@ -4,7 +4,7 @@ import etcd
 import logging
 
 
-LOG = logging.getLogger("etcdocker")
+LOG = logging.getLogger("docrane")
 
 
 def _get_docker_client():
@@ -36,7 +36,7 @@ def get_etcd_container_names(base_key_dir):
     Get container name list from etcd
 
     args:
-        base_key_dir (str) - etcd path for etcdocker
+        base_key_dir (str) - etcd path for docrane
 
     Returns: (list)
         List of container names

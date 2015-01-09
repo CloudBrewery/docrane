@@ -5,12 +5,12 @@ import sys
 
 from argparse import ArgumentParser
 
-from etcdocker import util
-from etcdocker.container import Container
-from etcdocker.watcher import ContainerWatcher, ImagesWatcher
+from docrane import util
+from docrane.container import Container
+from docrane.watcher import ContainerWatcher, ImagesWatcher
 
 
-LOG = logging.getLogger("etcdocker")
+LOG = logging.getLogger("docrane")
 
 
 def run(base_key_dir):
@@ -70,7 +70,7 @@ def main(*args, **kwargs):
 
     key_dir = args.base_dir
 
-    LOG.warn('---- Starting etcdocker ----')
+    LOG.warn('---- Starting docrane ----')
     run(key_dir)
 
 
