@@ -14,7 +14,13 @@ LOG = logging.getLogger("docrane")
 
 
 def run(base_key_dir):
-    # Main agent loop
+    """
+    Sets up all etcd watchers to bootstrap the process.
+
+    args:
+        base_key_dir (str) - etcd path to start looking for container
+                             configurations
+    """
     containers = util.get_etcd_container_names(base_key_dir)
     watchers = []
 
