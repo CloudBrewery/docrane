@@ -1,3 +1,7 @@
 build/
-docrane.egg-info/
-pbr-*.egg/
+*.py[cod]
+*.DS_Store
+dist/
+*.egg
+*.egg-info
+env/
