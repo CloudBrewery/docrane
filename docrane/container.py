@@ -70,6 +70,8 @@ class Container(object):
             # Shut down old container first
             LOG.warning("Stopping %s..." % self.name)
             util.stop_and_rm_docker_container(self.name)
+        elif not force_restart:
+            LOG.warning("Container %s not running." % self.name)
 
         self.docker_params = util.convert_params(self.params)
         LOG.warning("Starting %s..." % self.name)
