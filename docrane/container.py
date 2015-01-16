@@ -17,7 +17,11 @@ class Container(object):
         self.params[key] = value
         LOG.info("Set param '%s' on '%s'" % (key, self.name))
 
-    def update_params(self, params):
+    def remove_param(self, key):
+        self.params.pop(key, None)
+        LOG.info("Removed param '%s' from '%s'" % (key, self.name))
+
+    def update_params(self, etcd_params):
         """
         Checks if container's param keys have changed and
         makes changes to container if required.
@@ -26,18 +30,23 @@ class Container(object):
 
         args:
             container (obj) - Container
-            params (dict) - New params to check
+            etcd_params (dict) - Current params in etcd
 
         Returns: (bool)
             Let us know if they have changed
         """
         has_changed = False
 
-        for param, val in params.iteritems():
+        for param, val in etcd_params.iteritems():
             # Check for new or changed params
             if (param not in self.params.keys() or
                     val != self.params.get(param)):
                 self.set_or_create_param(param, val)
+                has_changed = True
+
+        for param in self.params.keys():
+            if (param not in etcd_params.keys()):
+                self.remove_param(param)
                 has_changed = True
 
         return has_changed
