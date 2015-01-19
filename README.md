@@ -51,4 +51,4 @@ The `/image` and `/tag` keys are used to create a combined image name in the for
 
 ## Issues / Feature Requests ##
 
-Please feel free to use the Bitbucket Issue Tracker to submit any issues or feature requests!
+Let us know if you run into any issues, or have any feature requests by using GitHub's issue tracker. We always welcome community feedback!
