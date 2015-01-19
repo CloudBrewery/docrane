@@ -51,4 +51,4 @@ The `/image` and `/tag` keys are used to create a combined image name in the for
 
 ## Issues / Feature Requests ##
 
-Let us know if you run into any issues, or have any feature requests by using GitHub's issue tracker. We always welcome community feedback!
+Let us know if you run into any issues, or have any feature requests by using [GitHub's issue tracker](https://github.com/CloudBrewery/docrane/issues). We always welcome community feedback!
