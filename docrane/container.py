@@ -13,14 +13,6 @@ class Container(object):
         self.docker_params = {}
         self.images_watcher = images_watcher
 
-    def set_or_create_param(self, key, value):
-        self.params[key] = value
-        LOG.info("Set param '%s' on '%s'" % (key, self.name))
-
-    def remove_param(self, key):
-        self.params.pop(key, None)
-        LOG.info("Removed param '%s' from '%s'" % (key, self.name))
-
     def update_params(self, etcd_params):
         """
         Checks if container's param keys have changed and
@@ -35,21 +27,17 @@ class Container(object):
         Returns: (bool)
             Let us know if they have changed
         """
-        has_changed = False
 
-        for param, val in etcd_params.iteritems():
-            # Check for new or changed params
-            if (param not in self.params.keys() or
-                    val != self.params.get(param)):
-                self.set_or_create_param(param, val)
-                has_changed = True
+        diff = set(etcd_params.items()) ^ set(self.params.items())
 
-        for param in self.params.keys():
-            if (param not in etcd_params.keys()):
-                self.remove_param(param)
-                has_changed = True
+        if len(diff):
+            LOG.warning("Params on %s have changed." % self.name)
+            LOG.info("Old params: %s" % self.params)
+            LOG.info("New params: %s" % etcd_params)
+            self.params = etcd_params
+            return True
 
-        return has_changed
+        return False
 
     def ensure_running(self, force_restart=False):
         """
@@ -77,20 +65,25 @@ class Container(object):
 
         if found:
             # Shut down old container first
-            LOG.warning("Stopping %s..." % self.name)
-            util.stop_and_rm_docker_container(self.name)
+            self.stop_and_rm()
         elif not force_restart:
             LOG.warning("Container %s not running." % self.name)
 
         self.docker_params = util.convert_params(self.params)
-        LOG.warning("Starting %s..." % self.name)
         self.create()
         self.start()
 
     def create(self):
         # Create container with specified args
+        LOG.info("Creating %s..." % self.name)
         util.create_docker_container(self.name, self.docker_params)
 
     def start(self):
         # Start 'er up
+        LOG.warning("Starting %s..." % self.name)
         util.start_docker_container(self.name, self.docker_params)
+
+    def stop_and_rm(self):
+        # Stop and remove
+        LOG.warning("Stopping %s..." % self.name)
+        util.stop_and_rm_docker_container(self.name)
