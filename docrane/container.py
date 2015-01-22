@@ -1,5 +1,7 @@
 import logging
 
+from docker import errors as docker_errors
+
 from docrane import util
 
 
@@ -17,8 +19,6 @@ class Container(object):
         """
         Checks if container's param keys have changed and
         makes changes to container if required.
-
-        TODO: Only handles adds right now (swat30)
 
         args:
             container (obj) - Container
@@ -76,7 +76,12 @@ class Container(object):
     def create(self):
         # Create container with specified args
         LOG.info("Creating %s..." % self.name)
-        util.create_docker_container(self.name, self.docker_params)
+        try:
+            util.create_docker_container(self.name, self.docker_params)
+        except docker_errors.APIError:
+            util.pull_image(
+                self.docker_params.get('image'), self.docker_params.get('tag'))
+            util.create_docker_container(self.name, self.docker_params)
 
     def start(self):
         # Start 'er up

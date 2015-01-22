@@ -195,3 +195,17 @@ def get_docker_similar_images(image_name, images):
                 cur_images.append(tag)
 
     return cur_images
+
+
+def pull_image(image, tag):
+    """
+    Pull an image down from repo
+
+    args:
+        image (str) - Image name
+        tag (str) - Image tag
+    """
+    client = _get_docker_client()
+    # TODO: Should have a setting for allowing this. Could be
+    # insecure.
+    client.pull(image, tag, insecure_registry=True)
