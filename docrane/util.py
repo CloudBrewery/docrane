@@ -123,6 +123,7 @@ def create_docker_container(name, params):
         detach=True,
         volumes=params.get('volumes'),
         ports=ports,
+        mem_limit=params.get('mem_limit'),
         name=name)
 
 
