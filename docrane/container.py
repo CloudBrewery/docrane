@@ -61,6 +61,8 @@ class Container(object):
                         full_image in cur_images and
                         not force_restart):
                     return
+                elif full_image not in cur_images:
+                    LOG.warning("Image ID has changed. Restarting container.")
                 break
 
         if found:
