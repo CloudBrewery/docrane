@@ -209,4 +209,4 @@ def pull_image(image, tag):
     client = _get_docker_client()
     # TODO: Should have a setting for allowing this. Could be
     # insecure.
-    client.pull(image, tag, insecure_registry=True)
+    return (client.pull(image, tag, insecure_registry=True).find("error") > -1)
