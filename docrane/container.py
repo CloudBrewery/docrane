@@ -1,7 +1,5 @@
 import logging
 
-from docker import errors as docker_errors
-
 from docrane import util
 
 
