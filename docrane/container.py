@@ -1,6 +1,7 @@
 import logging
 
 from docrane import util
+from docrane.exceptions import ImageNotFoundError
 
 
 LOG = logging.getLogger("docrane")
@@ -72,13 +73,13 @@ class Container(object):
                 break
 
         try:
-            image_found = util.pull_image(
+            util.pull_image(
                 self.docker_params.get('image'), self.docker_params.get('tag'))
-            assert image_found
-        except AssertionError:
+        except ImageNotFoundError:
             # The image wasn't found
             LOG.warning("Couldn't find image %s:%s. Delaying next scan.. " % (
-                self.docker_params.get('image'), self.docker_params.get('tag')))
+                self.docker_params.get('image'),
+                self.docker_params.get('tag')))
             self.delay = 4
             return
 
