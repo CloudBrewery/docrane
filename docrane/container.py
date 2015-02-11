@@ -1,8 +1,7 @@
 import logging
 
-from docker import errors as docker_errors
-
 from docrane import util
+from docrane.exceptions import ImageNotFoundError
 
 
 LOG = logging.getLogger("docrane")
@@ -14,6 +13,14 @@ class Container(object):
         self.params = params
         self.docker_params = {}
         self.images_watcher = images_watcher
+        self.delay = 0
+
+    def delay_tick(self):
+        """
+        Apply a tick to the watcher delay.
+        """
+        if self.delay > 0:
+            self.delay = self.delay - 1
 
     def update_params(self, etcd_params):
         """
@@ -65,6 +72,18 @@ class Container(object):
                     LOG.warning("Image ID has changed. Restarting container.")
                 break
 
+        try:
+            util.pull_image(
+                self.params.get('image'), self.params.get('tag'))
+        except ImageNotFoundError as e:
+            # The image wasn't found
+            LOG.error(e)
+            LOG.warning("Delaying next scan.. ")
+            self.delay = 4
+            return
+
+        self.delay = 0
+
         if found:
             # Shut down old container first
             self.stop_and_rm()
@@ -78,12 +97,7 @@ class Container(object):
     def create(self):
         # Create container with specified args
         LOG.info("Creating %s..." % self.name)
-        try:
-            util.create_docker_container(self.name, self.docker_params)
-        except docker_errors.APIError:
-            util.pull_image(
-                self.docker_params.get('image'), self.docker_params.get('tag'))
-            util.create_docker_container(self.name, self.docker_params)
+        util.create_docker_container(self.name, self.docker_params)
 
     def start(self):
         # Start 'er up

@@ -3,6 +3,8 @@ import docker
 import etcd
 import logging
 
+from docrane.exceptions import ImageNotFoundError
+
 
 LOG = logging.getLogger("docrane")
 
@@ -207,6 +209,10 @@ def pull_image(image, tag):
         tag (str) - Image tag
     """
     client = _get_docker_client()
-    # TODO: Should have a setting for allowing this. Could be
-    # insecure.
-    client.pull(image, tag, insecure_registry=True)
+    # TODO: Should have a setting for allowing insecure registries. Could be
+    # insecure / not desired.
+    LOG.info("Pulling %s:%s..." % (image, tag))
+    image_found = client.pull(image, tag, insecure_registry=True).find("error")
+
+    if image_found > -1:
+        raise ImageNotFoundError(image, tag)
