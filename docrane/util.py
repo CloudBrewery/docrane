@@ -211,6 +211,7 @@ def pull_image(image, tag):
     client = _get_docker_client()
     # TODO: Should have a setting for allowing insecure registries. Could be
     # insecure / not desired.
+    LOG.info("Pulling %s:%s..." % (image, tag))
     image_found = client.pull(image, tag, insecure_registry=True).find("error")
 
     if image_found > -1:

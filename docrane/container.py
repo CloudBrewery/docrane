@@ -74,12 +74,12 @@ class Container(object):
 
         try:
             util.pull_image(
-                self.docker_params.get('image'), self.docker_params.get('tag'))
+                self.params.get('image'), self.params.get('tag'))
         except ImageNotFoundError:
             # The image wasn't found
             LOG.warning("Couldn't find image %s:%s. Delaying next scan.. " % (
-                self.docker_params.get('image'),
-                self.docker_params.get('tag')))
+                self.params.get('image'),
+                self.params.get('tag')))
             self.delay = 4
             return
 
