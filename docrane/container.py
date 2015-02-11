@@ -21,7 +21,7 @@ class Container(object):
         Apply a tick to the watcher delay.
         """
         if self.delay > 0:
-            self.delay = self.delay -1
+            self.delay = self.delay - 1
 
     def update_params(self, etcd_params):
         """
