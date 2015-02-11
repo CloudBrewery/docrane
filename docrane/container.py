@@ -75,11 +75,10 @@ class Container(object):
         try:
             util.pull_image(
                 self.params.get('image'), self.params.get('tag'))
-        except ImageNotFoundError:
+        except ImageNotFoundError as e:
             # The image wasn't found
-            LOG.warning("Couldn't find image %s:%s. Delaying next scan.. " % (
-                self.params.get('image'),
-                self.params.get('tag')))
+            LOG.error(e)
+            LOG.warning("Delaying next scan.. ")
             self.delay = 4
             return
 
