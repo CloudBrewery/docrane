@@ -22,6 +22,9 @@ class ContainerWatcher(object):
 
             if self.container.delay > 0:
                 self.container.delay_tick()
+            elif not cur_params:
+                # Insert delay if container key doesn't exist
+                self.container.delay = 4
             elif self.container.update_params(cur_params):
                 LOG.info("Container '%s' has changed. Respawning..." % (
                     self.container.name))
