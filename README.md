@@ -1,5 +1,7 @@
 # docrane #
 
+![docrane](https://raw.githubusercontent.com/CloudBrewery/docrane/master/images/logo.png)
+
 docrane is a Docker container manager that relies on etcd to provide relevant configuration details. It watches for changes in configuration and automatically stops, removes, recreates, and starts your Docker containers.
 
 ## Installation ##
