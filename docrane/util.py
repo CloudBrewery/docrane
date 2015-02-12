@@ -66,7 +66,7 @@ def get_params(container_path):
     try:
         children = client.read(container_path)._children
     except KeyError:
-        LOG.error("Unfound etcd path %s" % container_path)
+        LOG.error("Missing etcd path %s" % container_path)
         return False
 
     params = {}
