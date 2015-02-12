@@ -20,7 +20,10 @@ class ContainerWatcher(object):
         while True:
             cur_params = util.get_params(self.container_key)
 
-            if self.container.update_params(cur_params):
+            if not cur_params:
+                # Don't do anything if we don't have params from etcd
+                pass
+            elif self.container.update_params(cur_params):
                 LOG.info("Container '%s' has changed. Respawning..." % (
                     self.container.name))
                 self.container.ensure_running(force_restart=True)
