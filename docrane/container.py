@@ -13,14 +13,6 @@ class Container(object):
         self.params = params
         self.docker_params = {}
         self.images_watcher = images_watcher
-        self.delay = 0
-
-    def delay_tick(self):
-        """
-        Apply a tick to the watcher delay.
-        """
-        if self.delay > 0:
-            self.delay = self.delay - 1
 
     def update_params(self, etcd_params):
         """
@@ -78,11 +70,7 @@ class Container(object):
         except ImageNotFoundError as e:
             # The image wasn't found
             LOG.error(e)
-            LOG.warning("Delaying next scan.. ")
-            self.delay = 4
             return
-
-        self.delay = 0
 
         if found:
             # Shut down old container first
