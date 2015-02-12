@@ -63,7 +63,12 @@ def get_params(container_path):
         Raw etcd params
     """
     client = _get_etcd_client()
-    children = client.read(container_path)._children
+    try:
+        children = client.read(container_path)._children
+    except KeyError:
+        LOG.error("Missing etcd path %s" % container_path)
+        return False
+
     params = {}
 
     for child in children:

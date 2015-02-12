@@ -20,8 +20,9 @@ class ContainerWatcher(object):
         while True:
             cur_params = util.get_params(self.container_key)
 
-            if self.container.delay > 0:
-                self.container.delay_tick()
+            if not cur_params:
+                # Don't do anything if we don't have params from etcd
+                pass
             elif self.container.update_params(cur_params):
                 LOG.info("Container '%s' has changed. Respawning..." % (
                     self.container.name))
