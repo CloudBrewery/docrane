@@ -50,8 +50,6 @@ $ etcdctl mk /docrane/mycontainer/ports "{'3306': '3306'}"
 
 The `/image` and `/tag` keys are used to create a combined image name in the format of image:tag. This enables you to simply change the tag when pushing a new version, rather than updating the entire image string every time.
 
-**Note:** Using latest for your tag is not recommended.
-
 ## Issues / Feature Requests ##
 
 Let us know if you run into any issues, or have any feature requests by using [GitHub's issue tracker](https://github.com/CloudBrewery/docrane/issues). We always welcome community feedback!
