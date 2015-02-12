@@ -11,13 +11,14 @@ Installation is as simple as running `pip install -r requirements.txt && python 
 ## Usage ##
 
 ```
-usage: docrane [-h] /etcd/path
+usage: docrane [-h -v] /etcd/path
 
 positional arguments:
   /etcd/path  etcd key directory storing config.
 
 optional arguments:
   -h, --help  show this help message and exit
+  -v, --verbose  set log level to INFO for more verbose logging
 ```
 
 ## etcd Key Structure##
