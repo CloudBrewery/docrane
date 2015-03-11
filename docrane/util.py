@@ -134,6 +134,7 @@ def create_docker_container(name, params):
         mem_limit=params.get('mem_limit'),
         cpu_shares=params.get('cpu_shares'),
         environment=params.get('environment'),
+        command=params.get('command'),
         name=name)
 
 
