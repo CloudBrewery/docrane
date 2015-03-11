@@ -92,7 +92,8 @@ def convert_params(params):
         'ports': None,
         'volumes_from': None,
         'volume_bindings': None,
-        'volumes': None}
+        'volumes': None,
+        'environment': None}
 
     for param in params.iterkeys():
         if params.get(param) and param in converted_params.keys():
@@ -132,6 +133,7 @@ def create_docker_container(name, params):
         ports=ports,
         mem_limit=params.get('mem_limit'),
         cpu_shares=params.get('cpu_shares'),
+        environment=params.get('environment'),
         name=name)
 
 
