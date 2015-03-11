@@ -93,7 +93,8 @@ def convert_params(params):
         'volumes_from': None,
         'volume_bindings': None,
         'volumes': None,
-        'environment': None}
+        'environment': None,
+        'command': None}
 
     for param in params.iterkeys():
         if params.get(param) and param in converted_params.keys():
