@@ -6,3 +6,7 @@ dist/
 *.egg-info
 .eggs/
 env/
+AUTHORS
+ChangeLog
+deb_dist/
+docrane-*.tar.gz
