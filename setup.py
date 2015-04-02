@@ -8,6 +8,6 @@ except ImportError:
     pass
 
 setup(
-    setup_requires=['pbr'],
+    setup_requires=['pbr>=0.10.0'],
     pbr=True,
 )
