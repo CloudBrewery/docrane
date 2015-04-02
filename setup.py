@@ -7,10 +7,7 @@ try:
 except ImportError:
     pass
 
-from docrane import __version__ as version
-
 setup(
     setup_requires=['pbr'],
     pbr=True,
-    version=version,
 )
