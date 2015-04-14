@@ -92,7 +92,9 @@ def convert_params(params):
         'ports': None,
         'volumes_from': None,
         'volume_bindings': None,
-        'volumes': None}
+        'volumes': None,
+        'environment': None,
+        'command': None}
 
     for param in params.iterkeys():
         if params.get(param) and param in converted_params.keys():
@@ -100,7 +102,8 @@ def convert_params(params):
                 converted_params[param] = ast.literal_eval(
                     params.get(param))
             except (ValueError, SyntaxError):
-                LOG.error("Malformed param '%s'. Skipping..." % param)
+                LOG.error("Possible malformed param '%s'." % param)
+                converted_params[param] = params.get(param)
         else:
             converted_params[param] = params.get(param)
 
@@ -132,6 +135,8 @@ def create_docker_container(name, params):
         ports=ports,
         mem_limit=params.get('mem_limit'),
         cpu_shares=params.get('cpu_shares'),
+        environment=params.get('environment'),
+        command=params.get('command'),
         name=name)
 
 
