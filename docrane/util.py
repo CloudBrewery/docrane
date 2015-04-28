@@ -128,6 +128,8 @@ def create_docker_container(name, params):
     except AttributeError:
         ports = []
 
+    LOG.info("Creating with params: %s" % params)
+
     client.create_container(
         image=params.get('image'),
         detach=True,
