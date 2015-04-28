@@ -137,6 +137,7 @@ def create_docker_container(name, params):
         cpu_shares=params.get('cpu_shares'),
         environment=params.get('environment'),
         command=params.get('command'),
+        hostname=params.get('hostname'),
         name=name)
 
 
