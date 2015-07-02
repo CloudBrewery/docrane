@@ -45,7 +45,9 @@ class ImagesWatcher(object):
         Update image list every so often
         """
         while True:
-            self.images = util.get_docker_images()
+            images = util.get_docker_images()
+            if images is not None:
+                self.images = images
 
             sleep(120)
 

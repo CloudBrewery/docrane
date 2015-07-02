@@ -193,7 +193,12 @@ def get_docker_images(filter=None):
     """
     client = _get_docker_client()
 
-    return client.images(name=filter)
+    try:
+        return client.images(name=filter)
+    except ConnectionError:
+        # If we can't connect to docker, log and return
+        LOG.error("Unable to connect to docker. Skipping...")
+        return
 
 
 def get_docker_similar_images(image_name, images):
