@@ -171,6 +171,7 @@ def start_docker_container(name):
         name (str) - Name of container
     """
     client = _get_docker_client()
+    check_links_started(params.get('links'))
     client.start(container=name)
 
 
@@ -185,6 +186,22 @@ def stop_and_rm_docker_container(name):
     # Try to stop the container, kill after 5 secs
     client.stop(name, 5)
     client.remove_container(name)
+
+
+def check_links_started(links):
+    """
+    Checks to make sure links are started
+
+    args:
+        links (list) - List of container names that are linked
+    """
+    client = _get_docker_client()
+
+    for link in links:
+        name = "/%s" % link
+        container = client.containers(filters={
+            'status': 'running',
+            ''})
 
 
 def get_docker_images(filter=None):
