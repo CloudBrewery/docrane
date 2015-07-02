@@ -47,6 +47,9 @@ class Container(object):
         """
         # Ensure container is running with specified params
         containers = util.get_containers()
+        if containers is None:
+            return
+
         found = False
 
         for pc in containers:

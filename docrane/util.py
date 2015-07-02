@@ -2,6 +2,7 @@ import ast
 import docker
 import etcd
 import logging
+from requests.exceptions import ConnectionError
 
 from docrane.exceptions import ImageNotFoundError
 
@@ -21,7 +22,12 @@ def _get_etcd_client():
 
 def get_containers():
     client = _get_docker_client()
-    return client.containers(all=True)
+    try:
+        return client.containers(all=True)
+    except ConnectionError:
+        # If we can't connect to docker, log and return
+        LOG.error("Unable to connect to docker. Skipping...")
+        return
 
 
 def get_container_names(containers):
