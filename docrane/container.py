@@ -55,14 +55,14 @@ class Container(object):
         for pc in containers:
             if "/%s" % self.name in pc['Names']:
                 found = True
+                full_image = "%s:%s" % (
+                    self.params.get('image'), self.params.get('tag'))
                 try:
-                    full_image = "%s:%s" % (
-                        self.params.get('image'), self.params.get('tag'))
+                    cur_images = util.get_docker_similar_images(
+                        pc['Image'], self.images_watcher.get_images())
                 except TypeError:
                     # No images. Wait until image watcher resyncs
                     return
-                cur_images = util.get_docker_similar_images(
-                    pc['Image'], self.images_watcher.get_images())
                 if (pc['Status'].startswith('Up') and
                         full_image in cur_images and
                         not force_restart):
