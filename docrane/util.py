@@ -112,7 +112,12 @@ def convert_params(params):
                 LOG.error("Possible malformed param '%s'." % param)
                 converted_params[param] = params.get(param)
         else:
-            converted_params[param] = params.get(param)
+            if params.get(param) in ('True', 'true'):
+                converted_params[param] = True
+            elif params.get(param) in ('False', 'false'):
+                converted_params[param] = False
+            else:
+                converted_params[param] = params.get(param)
 
     converted_params['image'] = "%s:%s" % (
         params.get('image'), params.get('tag'))
