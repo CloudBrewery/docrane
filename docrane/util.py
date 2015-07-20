@@ -148,7 +148,6 @@ def create_docker_container(name, params):
         binds=params.get('volume_bindings', {}),
         links=params.get('links'),
         mem_limit=params.get('mem_limit'),
-        cpu_shares=params.get('cpu_shares'),
         privileged=params.get('privileged'))
 
     client.create_container(
@@ -159,6 +158,7 @@ def create_docker_container(name, params):
         environment=params.get('environment'),
         command=params.get('command'),
         hostname=params.get('hostname'),
+        cpu_shares=params.get('cpu_shares'),
         host_config=hostconfig,
         name=name)
 
