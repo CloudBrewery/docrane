@@ -142,35 +142,36 @@ def create_docker_container(name, params):
 
     LOG.info("Creating with params: %s" % params)
 
+    hostconfig = docker.utils.create_host_config(
+        port_bindings=params.get('ports'),
+        volumes_from=params.get('volumes_from'),
+        binds=params.get('volume_bindings', {}),
+        links=params.get('links'),
+        mem_limit=params.get('mem_limit'),
+        cpu_shares=params.get('cpu_shares'),
+        privileged=params.get('privileged'))
+
     client.create_container(
         image=params.get('image'),
         detach=True,
         volumes=params.get('volumes'),
         ports=ports,
-        mem_limit=params.get('mem_limit'),
-        cpu_shares=params.get('cpu_shares'),
         environment=params.get('environment'),
         command=params.get('command'),
         hostname=params.get('hostname'),
+        host_config=hostconfig,
         name=name)
 
 
-def start_docker_container(name, params):
+def start_docker_container(name):
     """
     Start a Docker container
 
     args:
         name (str) - Name of container
-        params (dict) - Docker params
     """
     client = _get_docker_client()
-    client.start(
-        container=name,
-        port_bindings=params.get('ports'),
-        links=params.get('links'),
-        volumes_from=params.get('volumes_from'),
-        binds=params.get('volume_bindings', {}),
-        privileged=params.get('privileged'))
+    client.start(container=name)
 
 
 def stop_and_rm_docker_container(name):

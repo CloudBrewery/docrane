@@ -97,7 +97,7 @@ class Container(object):
     def start(self):
         # Start 'er up
         LOG.warning("Starting %s..." % self.name)
-        util.start_docker_container(self.name, self.docker_params)
+        util.start_docker_container(self.name)
 
     def stop_and_rm(self):
         # Stop and remove
