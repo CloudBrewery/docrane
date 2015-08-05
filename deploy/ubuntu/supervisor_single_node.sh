@@ -6,7 +6,7 @@ apt-get install -y supervisor
 echo "[program:docrane]
 autorestart=true
 autostart=true
-command=/root/.virtualenvs/docrane/bin/docrane -v /docrane 
+command=/usr/local/bin/docrane -v /docrane
 redirect_stderr=true
 stdout_logfile=/var/log/docrane.log
 stdout_logfile_maxbytes=5MB
