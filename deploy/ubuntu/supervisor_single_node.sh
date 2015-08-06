@@ -1,7 +1,7 @@
 #!/bin/bash
 
 apt-get update
-apt-get install -y supervisor
+apt-get install -y supervisor python-setuptools python-pip python-dev libffi-dev
 
 echo "[program:docrane]
 autorestart=true
@@ -25,6 +25,7 @@ rm -Rf etcd-v2.0.13-linux-amd64 etcd-v2.0.13-linux-amd64.tar.gz
 
 # Install docrane
 cd $(dirname "${BASH_SOURCE[0]}") && cd ../../
+pip install -r requirements.txt
 python setup.py install
 etcdctl mkdir /docrane
 
