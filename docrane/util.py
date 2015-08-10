@@ -100,9 +100,13 @@ def _convert_ports(tcp_ports, udp_ports):
         return [], {}
     config_ports = tcp_ports
 
-    for hostport, contport in udp_ports:
-        create_ports.append((hostport, 'udp'))
-        config_ports['%s/udp' % hostport] = contport
+    try:
+        for hostport, contport in udp_ports:
+            create_ports.append((hostport, 'udp'))
+            config_ports['%s/udp' % hostport] = contport
+    except TypeError:
+        # No UDP ports have been defined
+        pass
 
     return create_ports, config_ports
 
