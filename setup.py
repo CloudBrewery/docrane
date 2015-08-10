@@ -7,6 +7,8 @@ try:
 except ImportError:
     pass
 
+execfile('docrane/version.py')
+
 setup(
     setup_requires=['pbr>=0.10.0'],
     pbr=True,
