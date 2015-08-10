@@ -118,7 +118,7 @@ def convert_params(params):
     Returns: (dict)
         Converted docker params
     """
-    converted_params = {
+    c_params = {
         'ports': None,
         'udp_ports': None,
         'volumes_from': None,
@@ -129,29 +129,28 @@ def convert_params(params):
         'links': None}
 
     for param in params.iterkeys():
-        if params.get(param) and param in converted_params.keys():
+        if params.get(param) and param in c_params.keys():
             try:
-                converted_params[param] = ast.literal_eval(
+                c_params[param] = ast.literal_eval(
                     params.get(param))
             except (ValueError, SyntaxError):
                 LOG.error("Possible malformed param '%s'." % param)
-                converted_params[param] = params.get(param)
+                c_params[param] = params.get(param)
         else:
             if params.get(param) in ('True', 'true'):
-                converted_params[param] = True
+                c_params[param] = True
             elif params.get(param) in ('False', 'false'):
-                converted_params[param] = False
+                c_params[param] = False
             else:
-                converted_params[param] = params.get(param)
+                c_params[param] = params.get(param)
 
-    converted_params['image'] = "%s:%s" % (
+    c_params['image'] = "%s:%s" % (
         params.get('image'), params.get('tag'))
 
-    (converted_params['create_ports'], converted_params['config_ports']) = \
-        _convert_ports(converted_params.get('ports'),
-                       converted_params.get('udp_ports'))
+    (c_params['create_ports'], c_params['config_ports']) = _convert_ports(
+        c_params.get('ports'), c_params.get('udp_ports'))
 
-    return converted_params
+    return c_params
 
 
 def create_docker_container(name, params):
