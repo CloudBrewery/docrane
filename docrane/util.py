@@ -84,6 +84,29 @@ def get_params(container_path):
     return params
 
 
+def _convert_ports(tcp_ports, udp_ports):
+    """
+    Make ports compat for both hostconfig and create
+
+    args:
+        params (dict) - ports to convert
+
+    Returns: (list)
+        Converted ports for create and hostconfig resepctively
+    """
+    try:
+        create_ports = tcp_ports.keys()
+    except AttributeError:
+        return [], {}
+    config_ports = tcp_ports
+
+    for hostport, contport in udp_ports:
+        create_ports.append((hostport, 'udp'))
+        config_ports['%s/udp' % hostport] = contport
+
+    return create_ports, config_ports
+
+
 def convert_params(params):
     """
     Converts etcd params to docker params
@@ -96,6 +119,7 @@ def convert_params(params):
     """
     converted_params = {
         'ports': None,
+        'udp_ports': None,
         'volumes_from': None,
         'volume_bindings': None,
         'volumes': None,
@@ -122,6 +146,10 @@ def convert_params(params):
     converted_params['image'] = "%s:%s" % (
         params.get('image'), params.get('tag'))
 
+    (converted_params['create_ports'], converted_params['config_ports']) = \
+        _convert_ports(converted_params.get('ports'),
+                       converted_params.get('udp_ports'))
+
     return converted_params
 
 
@@ -135,15 +163,10 @@ def create_docker_container(name, params):
     """
     client = _get_docker_client()
 
-    try:
-        ports = params.get('ports').keys()
-    except AttributeError:
-        ports = []
-
     LOG.info("Creating with params: %s" % params)
 
     hostconfig = docker.utils.create_host_config(
-        port_bindings=params.get('ports'),
+        port_bindings=params.get('config_ports'),
         volumes_from=params.get('volumes_from'),
         binds=params.get('volume_bindings', {}),
         links=params.get('links'),
@@ -154,7 +177,7 @@ def create_docker_container(name, params):
         image=params.get('image'),
         detach=True,
         volumes=params.get('volumes'),
-        ports=ports,
+        ports=params.get('create_ports'),
         environment=params.get('environment'),
         command=params.get('command'),
         hostname=params.get('hostname'),
