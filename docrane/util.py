@@ -84,6 +84,30 @@ def get_params(container_path):
     return params
 
 
+def _convert_ports(tcp_ports, udp_ports):
+    """
+    Make ports compat for both hostconfig and create
+
+    args:
+        params (dict) - ports to convert
+
+    Returns: (list)
+        Converted ports for create and hostconfig resepctively
+    """
+    try:
+        create_ports = tcp_ports.keys()
+    except AttributeError:
+        return [], {}
+    config_ports = tcp_ports
+
+    if udp_ports:
+        for hostport, contport in udp_ports.iteritems():
+            create_ports.append((hostport, 'udp'))
+            config_ports["%s/udp" % hostport] = contport
+
+    return create_ports, config_ports
+
+
 def convert_params(params):
     """
     Converts etcd params to docker params
@@ -94,8 +118,9 @@ def convert_params(params):
     Returns: (dict)
         Converted docker params
     """
-    converted_params = {
+    c_params = {
         'ports': None,
+        'udp_ports': None,
         'volumes_from': None,
         'volume_bindings': None,
         'volumes': None,
@@ -104,25 +129,28 @@ def convert_params(params):
         'links': None}
 
     for param in params.iterkeys():
-        if params.get(param) and param in converted_params.keys():
+        if params.get(param) and param in c_params.keys():
             try:
-                converted_params[param] = ast.literal_eval(
+                c_params[param] = ast.literal_eval(
                     params.get(param))
             except (ValueError, SyntaxError):
                 LOG.error("Possible malformed param '%s'." % param)
-                converted_params[param] = params.get(param)
+                c_params[param] = params.get(param)
         else:
             if params.get(param) in ('True', 'true'):
-                converted_params[param] = True
+                c_params[param] = True
             elif params.get(param) in ('False', 'false'):
-                converted_params[param] = False
+                c_params[param] = False
             else:
-                converted_params[param] = params.get(param)
+                c_params[param] = params.get(param)
 
-    converted_params['image'] = "%s:%s" % (
+    c_params['image'] = "%s:%s" % (
         params.get('image'), params.get('tag'))
 
-    return converted_params
+    (c_params['create_ports'], c_params['config_ports']) = _convert_ports(
+        c_params.get('ports'), c_params.get('udp_ports'))
+
+    return c_params
 
 
 def create_docker_container(name, params):
@@ -135,15 +163,10 @@ def create_docker_container(name, params):
     """
     client = _get_docker_client()
 
-    try:
-        ports = params.get('ports').keys()
-    except AttributeError:
-        ports = []
-
     LOG.info("Creating with params: %s" % params)
 
     hostconfig = docker.utils.create_host_config(
-        port_bindings=params.get('ports'),
+        port_bindings=params.get('config_ports'),
         volumes_from=params.get('volumes_from'),
         binds=params.get('volume_bindings', {}),
         links=params.get('links'),
@@ -154,7 +177,7 @@ def create_docker_container(name, params):
         image=params.get('image'),
         detach=True,
         volumes=params.get('volumes'),
-        ports=ports,
+        ports=params.get('create_ports'),
         environment=params.get('environment'),
         command=params.get('command'),
         hostname=params.get('hostname'),
