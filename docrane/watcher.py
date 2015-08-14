@@ -30,7 +30,7 @@ class ContainerWatcher(object):
             else:
                 self.container.ensure_running()
 
-            sleep(30)
+            sleep(5)
 
 
 class ImagesWatcher(object):
