@@ -49,7 +49,7 @@ class ImagesWatcher(object):
             if images is not None:
                 self.images = images
 
-            sleep(120)
+            sleep(5)
 
     def get_images(self):
         """
