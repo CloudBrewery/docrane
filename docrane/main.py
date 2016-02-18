@@ -63,6 +63,9 @@ def main(*args, **kwargs):
                         help='etcd key directory storing config.')
     parser.add_argument('-v', '--verbose', help='Enable verbose logging',
                         action="store_true")
+    parser.add_argument('-p', '--pre_boot', action="append",
+                        help='Boot container before scanning etcd',
+                        default=[])
     args = parser.parse_args()
 
     log_handler = logging.StreamHandler(sys.stdout)
@@ -77,6 +80,11 @@ def main(*args, **kwargs):
     key_dir = args.base_dir
 
     LOG.warn('---- Starting docrane ----')
+
+    for container in args.pre_boot:
+        LOG.warn('Pre-booting %s' % container)
+        util.start_docker_container(container)
+
     run(key_dir)
 
 
