@@ -64,7 +64,8 @@ def main(*args, **kwargs):
     parser.add_argument('-v', '--verbose', help='Enable verbose logging',
                         action="store_true")
     parser.add_argument('-p', '--pre_boot', action="append",
-                        help='Boot container before scanning etcd')
+                        help='Boot container before scanning etcd',
+                        default=[])
     args = parser.parse_args()
 
     log_handler = logging.StreamHandler(sys.stdout)
@@ -80,9 +81,9 @@ def main(*args, **kwargs):
 
     LOG.warn('---- Starting docrane ----')
 
-    for cont in args.pre_boot:
-        LOG.warn('Pre-booting %s' % cont)
-        util.start_docker_container(cont)
+    for container in args.pre_boot:
+        LOG.warn('Pre-booting %s' % container)
+        util.start_docker_container(container)
 
     run(key_dir)
 
