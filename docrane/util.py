@@ -165,7 +165,7 @@ def create_docker_container(name, params):
 
     LOG.info("Creating with params: %s" % params)
 
-    hostconfig = docker.utils.create_host_config(
+    hostconfig = client.create_host_config(
         port_bindings=params.get('config_ports'),
         volumes_from=params.get('volumes_from'),
         binds=params.get('volume_bindings', {}),
