@@ -194,7 +194,11 @@ def start_docker_container(name):
         name (str) - Name of container
     """
     client = _get_docker_client()
-    client.start(container=name)
+    try:
+        client.start(container=name)
+    except docker.errors.APIError as e:
+        LOG.error("Error starting container %s. (%s)\n\rContinuing..." % (
+            name, e.message))
 
 
 def stop_and_rm_docker_container(name):
