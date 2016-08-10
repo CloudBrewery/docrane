@@ -126,7 +126,8 @@ def convert_params(params):
         'volumes': None,
         'environment': None,
         'command': None,
-        'links': None}
+        'links': None,
+        'log_config': None}
 
     for param in params.iterkeys():
         if params.get(param) and param in c_params.keys():
@@ -171,7 +172,8 @@ def create_docker_container(name, params):
         binds=params.get('volume_bindings', {}),
         links=params.get('links'),
         mem_limit=params.get('mem_limit'),
-        privileged=params.get('privileged'))
+        privileged=params.get('privileged'),
+        log_config=params.get('log_config'))
 
     client.create_container(
         image=params.get('image'),
