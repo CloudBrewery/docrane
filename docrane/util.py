@@ -127,7 +127,8 @@ def convert_params(params):
         'environment': None,
         'command': None,
         'links': None,
-        'log_config': None}
+        'log_config': None,
+        'networking_config': None}
 
     for param in params.iterkeys():
         if params.get(param) and param in c_params.keys():
@@ -184,6 +185,7 @@ def create_docker_container(name, params):
         command=params.get('command'),
         hostname=params.get('hostname'),
         cpu_shares=params.get('cpu_shares'),
+        networking_config=params.get('networking_config'),
         host_config=hostconfig,
         name=name)
 
