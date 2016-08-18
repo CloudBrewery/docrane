@@ -86,13 +86,13 @@ class Container(object):
             LOG.warning("Container %s not running." % self.name)
 
         self.docker_params = util.convert_params(self.params)
-        self.create()
-        self.start()
+        if self.create():
+            self.start()
 
     def create(self):
         # Create container with specified args
         LOG.info("Creating %s..." % self.name)
-        util.create_docker_container(self.name, self.docker_params)
+        return util.create_docker_container(self.name, self.docker_params)
 
     def start(self):
         # Start 'er up

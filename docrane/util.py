@@ -162,6 +162,9 @@ def create_docker_container(name, params):
     args:
         name (str) - Name of container
         params (dict) - Docker params
+
+    Returns: (bool)
+        Whether or not create was successful
     """
     client = _get_docker_client()
 
@@ -176,18 +179,25 @@ def create_docker_container(name, params):
         privileged=params.get('privileged'),
         log_config=params.get('log_config'))
 
-    client.create_container(
-        image=params.get('image'),
-        detach=True,
-        volumes=params.get('volumes'),
-        ports=params.get('create_ports'),
-        environment=params.get('environment'),
-        command=params.get('command'),
-        hostname=params.get('hostname'),
-        cpu_shares=params.get('cpu_shares'),
-        networking_config=params.get('networking_config'),
-        host_config=hostconfig,
-        name=name)
+    try:
+        client.create_container(
+            image=params.get('image'),
+            detach=True,
+            volumes=params.get('volumes'),
+            ports=params.get('create_ports'),
+            environment=params.get('environment'),
+            command=params.get('command'),
+            hostname=params.get('hostname'),
+            cpu_shares=params.get('cpu_shares'),
+            networking_config=params.get('networking_config'),
+            host_config=hostconfig,
+            name=name)
+        return True
+    except docker.errors.APIError as e:
+        LOG.error("Error creating container %s. (%s)\n\rContinuing..." % (
+            name, e.message))
+
+    return False
 
 
 def start_docker_container(name):
